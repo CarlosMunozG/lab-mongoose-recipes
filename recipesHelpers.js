@@ -25,26 +25,25 @@ const createOneRecipe = async () => {
 
 const addManyRecipes = async (data) => {
   try {
-    const response = Recipe.insertMany(data)
+    const response = await Recipe.insertMany(data)
     response.forEach(recipe => console.log(recipe.title))
   } catch (error) {
     console.log(error)
   }
 }
 
-const findOneAndUpdate = async (data) => {
+const findOneAndUpdate = async () => {
   try {
-    const response = Recipe.findOneAndUpdate({
-      ObjectId: '5d3036dfa6d37f8351ebbd29' }, { $set: { duration: 100 } }, { new: true })
+    const response = await Recipe.findOneAndUpdate({ title: 'Rigatoni alla Genovese' }, { duration: 100 })
     console.log(response, 'The change was made!!!')
   } catch (error) {
     console.log(error)
   }
 }
 
-const remove = async (data) => {
+const remove = async () => {
   try {
-    const response = Recipe.remove({ _id: '5d3036dfa6d37f8351ebbd28' })
+    const response = await Recipe.remove({ title: 'Carrot Cake' })
     console.log(response, 'The recipe was deleted')
   } catch (error) {
     console.log(error)
