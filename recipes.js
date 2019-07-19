@@ -3,7 +3,7 @@
 const mongoose = require('mongoose')
 
 // const Recipe = require('./Models/Recipe.js')
-const { createOneRecipe, addManyRecipes, findOneAndUpdate, remove } = require('./recipesHelpers.js')
+const { createOneRecipe, addManyRecipes, findOneAndUpdate, deleteOne, emptyCollection } = require('./recipesHelpers.js')
 const data = require('./data.js')
 
 mongoose.connect('mongodb://localhost/recipeApp')
@@ -13,14 +13,13 @@ mongoose.connect('mongodb://localhost/recipeApp')
     console.error('Error connecting to mongo', err)
   })
 
-createOneRecipe()
-addManyRecipes(data)
-findOneAndUpdate()
-remove()
+const doExercise = async () => {
+  await emptyCollection()
+  await createOneRecipe()
+  await addManyRecipes(data)
+  await findOneAndUpdate('Rigatoni alla Genovese')
+  await deleteOne('Carrot Cake')
+  mongoose.connection.close()
+}
 
-process.on('SIGINT', async function () {
-  await mongoose.connection.close(function () {
-    console.log('Mongoose default connection disconnected through app termination')
-    process.exit(0)
-  })
-})
+doExercise()

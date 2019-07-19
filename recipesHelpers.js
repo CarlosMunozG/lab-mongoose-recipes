@@ -32,22 +32,29 @@ const addManyRecipes = async (data) => {
   }
 }
 
-const findOneAndUpdate = async () => {
+const findOneAndUpdate = async (recipe) => {
   try {
-    const response = await Recipe.findOneAndUpdate({ title: 'Rigatoni alla Genovese' }, { duration: 100 })
+    const title = recipe.title
+    const response = await Recipe.findOneAndUpdate({ title }, { duration: 100 }, { new: true })
     console.log(response, 'The change was made!!!')
   } catch (error) {
     console.log(error)
   }
 }
 
-const remove = async () => {
+const deleteOne = async (recipe) => {
   try {
-    const response = await Recipe.remove({ title: 'Carrot Cake' })
+    const title = recipe.title
+    const response = await Recipe.deleteOne({ title })
     console.log(response, 'The recipe was deleted')
   } catch (error) {
     console.log(error)
   }
 }
 
-module.exports = { createOneRecipe, addManyRecipes, findOneAndUpdate, remove }
+const emptyCollection = async () => {
+  await Recipe.deleteMany()
+  console.log('collection deleted')
+}
+
+module.exports = { createOneRecipe, addManyRecipes, findOneAndUpdate, deleteOne, emptyCollection }
